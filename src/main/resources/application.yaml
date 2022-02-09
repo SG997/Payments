@@ -1,0 +1,10 @@
+server:
+  port:
+    8060
+
+spring:
+  data:
+    mongodb:
+      database: Payments
+      port: 27017
+      host: localhost
