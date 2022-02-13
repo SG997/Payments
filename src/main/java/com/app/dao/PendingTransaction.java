@@ -7,8 +7,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@Document(collection = "Payment")
-public class Payments {
+@Document(collection = "PendingTransaction")
+public class PendingTransaction {
 
     @Id
     String id;
@@ -26,7 +26,7 @@ public class Payments {
     PaymentType paymentType;
 
 
-    public Payments(String from, String to, double amount, String time, PaymentMethod paymentMethod, PaymentType paymentType) {
+    public PendingTransaction(String from, String to, double amount, String time, PaymentMethod paymentMethod, PaymentType paymentType) {
         this.from = from;
         this.to = to;
         this.amount = amount;

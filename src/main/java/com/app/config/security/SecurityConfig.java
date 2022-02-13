@@ -25,7 +25,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final PasswordEncoder passwordEncoder;
 
     private static final String[] WHITE_LIST= {
-
             "/v2/api-docs",
             "/swagger-resources",
             "/swagger-resources/**",
