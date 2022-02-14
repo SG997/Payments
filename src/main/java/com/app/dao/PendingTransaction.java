@@ -25,14 +25,25 @@ public class PendingTransaction {
 
     PaymentType paymentType;
 
+    String processId;
 
-    public PendingTransaction(String from, String to, double amount, String time, PaymentMethod paymentMethod, PaymentType paymentType) {
+
+    public PendingTransaction(String from, String to, double amount, String time, PaymentMethod paymentMethod, PaymentType paymentType, String processId) {
         this.from = from;
         this.to = to;
         this.amount = amount;
         this.time = time;
         this.paymentMethod = paymentMethod;
         this.paymentType = paymentType;
+        this.processId = processId;
+    }
+
+    public String getProcessId() {
+        return processId;
+    }
+
+    public void setProcessId(String processId) {
+        this.processId = processId;
     }
 
     public String getFrom() {

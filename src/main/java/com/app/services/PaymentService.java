@@ -5,6 +5,7 @@ import com.app.config.system_data.UserDetailsAuth;
 import com.app.dao.PendingTransaction;
 import com.app.data.RequestUrlForPaymentData;
 import com.app.data.meshulam.CreatePaymentProcess;
+import com.app.data.responses.GenerateUrlResponse;
 import com.app.repo.PendingTransactionRepo;
 import com.app.rest.RestAPI;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class PaymentService {
 
 
 
-    public String generateUrlForPayment(UserDetailsAuth userDetailsAuth, RequestUrlForPaymentData requestData){
+    public GenerateUrlResponse generateUrlForPayment(UserDetailsAuth userDetailsAuth, RequestUrlForPaymentData requestData){
 
         String userId = userDetailsAuth.getIsraeliIdNumber();
         String fullName = userDetailsAuth.getName() + " " + userDetailsAuth.getLastName();
@@ -34,21 +35,21 @@ public class PaymentService {
 
         // TODO save status pending for payment in the db
         String time = Utils.getFormattedDate(Calendar.getInstance().getTime());
-        PendingTransaction pendingTransaction = new PendingTransaction(userId, "System", requestData.getSum(), time, requestData.getPaymentMethod(), requestData.getPaymentType());
+        PendingTransaction pendingTransaction = new PendingTransaction(userId, "System", requestData.getSum(), time, requestData.getPaymentMethod(), requestData.getPaymentType(), createPaymentProcess.getData().getProcessId() + "");
 
         this.pendingTransactionRepo.save(pendingTransaction);
 
-        return createPaymentProcess.getData().getUrl();
+        return new GenerateUrlResponse(createPaymentProcess.getData().getUrl(), pendingTransaction.getProcessId());
     }
 
     public void payForUserFee(String from, String to, double amount, long timeStamp){
-        /*Payments payments = new Payments(from, to, amount, timeStamp);
 
-        // Save in the DB
-        this.paymentsRepo.save(payments);*/
+        // Check if it available from what it suppose to be in Cache
 
-        // Inform the User service about the payment
+        //this.pendingTransactionRepo.findBy
 
+        // If it is save
+        // If it not save it as well and inform about it
 
         // Notify User service
 

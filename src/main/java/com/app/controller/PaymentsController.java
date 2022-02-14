@@ -6,6 +6,7 @@ import com.app.data.PaymentMethod;
 import com.app.data.PaymentType;
 import com.app.data.ReportPayment;
 import com.app.data.RequestUrlForPaymentData;
+import com.app.data.responses.GenerateUrlResponse;
 import com.app.services.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -49,9 +50,9 @@ public class PaymentsController {
                 return ResponseEntity.badRequest().body("Wrong use of this methods, please try diffrent payment method");
             }
 
-            String url = this.paymentsService.generateUrlForPayment(userDetailsAuth, requestData);
+            GenerateUrlResponse generateUrlForPayment = this.paymentsService.generateUrlForPayment(userDetailsAuth, requestData);
 
-            return ResponseEntity.ok().body(url);
+            return ResponseEntity.ok().body(generateUrlForPayment);
         }
 
         return ResponseEntity.badRequest().build();
