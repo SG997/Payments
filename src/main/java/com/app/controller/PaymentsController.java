@@ -7,11 +7,14 @@ import com.app.data.RequestUrlForPaymentData;
 import com.app.data.responses.GenerateUrlResponse;
 import com.app.marketing.DealsType;
 import com.app.services.PaymentService;
+import io.swagger.v3.oas.annotations.headers.Header;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 
 @RequestMapping("payments")
@@ -22,7 +25,7 @@ public class PaymentsController {
     private PaymentService paymentsService;
 
     @PostMapping("/payForUserFee")
-    public ResponseEntity<?> payForUserFee(@RequestBody ReportPayment paymentReport){
+    public ResponseEntity<?> payForUserFee(@RequestBody ReportPayment paymentReport, @RequestHeader(name = AUTHORIZATION) String header) throws Exception {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -30,7 +33,7 @@ public class PaymentsController {
             UserDetailsAuth userDetailsAuth = ((AuthenticationResponse) authentication.getPrincipal()).getUserDetailsAuth();
 
 
-            this.paymentsService.payForUserFee(userDetailsAuth.getIsraeliIdNumber(), paymentReport);
+            this.paymentsService.payForUserFee(header, userDetailsAuth.getIsraeliIdNumber(), paymentReport);
 
             return ResponseEntity.ok().build();
         } else {

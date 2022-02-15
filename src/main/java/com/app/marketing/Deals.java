@@ -21,13 +21,18 @@ public class Deals {
     */
 
     private static final DealsPack MONTHLY_PACK = new DealsPack(0, 1, 0);
-    private static final DealsPack YEARLY_PACK = new DealsPack(0,0,1);
+    private static final DealsPack YEARLY_PACK = new DealsPack(1,0,0);
 
     final int MONTHLY_DAYS = 0;
 
-    static public DealsPack getDays(int price){
+    static public DealsPack getPacks(int price){
+        return getPacks(DealsType.findByValue(price));
+    }
+
+
+    static public DealsPack getPacks(DealsType dealsType){
         DealsPack dealsPack = null;
-        switch (MONTHLY/*DealsType.findByValue(price)*/){
+        switch (dealsType){
             case YEARLY:
                 dealsPack = YEARLY_PACK;
                 break;

@@ -1,20 +1,16 @@
 package com.app.rest;
 
+import com.app.Exception.DataNotSaveInDb;
 import com.app.data.PaymentMethod;
 import com.app.data.meshulam.CreatePaymentProcess;
+import com.app.marketing.data.DealsPack;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.*;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
@@ -22,22 +18,38 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 public class RestAPI {
 
     private final String url = "http://localhost:8065/user/getPersonalDetails";
+    private final String urlExpandsUserValidity = "http://localhost:8065/userRelated/notifyPayment";
+
 
     private final String INTERNATIONAL_ISRAELI_PREFIX = "+972";
 
-    public void UpdateForReceivePayment(String header, List<String> ids){
+    public void expandForReceivePayment(String header, DealsPack expandsTime) throws Exception {
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add(AUTHORIZATION, header);
+        headers.add(AUTHORIZATION, " " + header);
+
+
+
+
+
+
+        // Request url TODO inject it
 
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
-        HttpEntity<List<String>> request = new HttpEntity<List<String>>(ids, headers);
 
-        //RelatedAuthResponse relatedAuthResponse = restTemplate.postForObject(url, request, RelatedAuthResponse.class);
+        HttpEntity<DealsPack> request = new HttpEntity<>(expandsTime, headers);
 
-        //return relatedAuthResponse;
+        // Execute the request
+        ResponseEntity<String> response = restTemplate.postForEntity(urlExpandsUserValidity, request , String.class);
+
+        // TODO save the full Json text in logs for future testing
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            throw new DataNotSaveInDb();
+        }
+
+
     }
 
 

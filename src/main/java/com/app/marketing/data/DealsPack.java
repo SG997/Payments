@@ -1,37 +1,38 @@
 package com.app.marketing.data;
 
 public class DealsPack {
-    int days;
-    int months;
-    int years;
+    int year;
+    int month;
+    int day;
 
-    public DealsPack(int days, int months, int years) {
-        this.days = days;
-        this.months = months;
-        this.years = years;
+
+    public DealsPack(int year, int month, int day) {
+        this.year = year;
+        this.month = month;
+        this.day = day;
     }
 
-    public int getDays() {
-        return days;
+    public int getYear() {
+        return year;
     }
 
-    public void setDays(int days) {
-        this.days = days;
+    public void setYear(int year) {
+        this.year = year;
     }
 
-    public int getMonths() {
-        return months;
+    public int getMonth() {
+        return month;
     }
 
-    public void setMonths(int months) {
-        this.months = months;
+    public void setMonth(int month) {
+        this.month = month;
     }
 
-    public int getYears() {
-        return years;
+    public int getDay() {
+        return day;
     }
 
-    public void setYears(int years) {
-        this.years = years;
+    public void setDay(int day) {
+        this.day = day;
     }
 }

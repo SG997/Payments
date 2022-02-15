@@ -8,7 +8,9 @@ import com.app.data.ReportPayment;
 import com.app.data.RequestUrlForPaymentData;
 import com.app.data.meshulam.CreatePaymentProcess;
 import com.app.data.responses.GenerateUrlResponse;
+import com.app.marketing.Deals;
 import com.app.marketing.DealsType;
+import com.app.marketing.data.DealsPack;
 import com.app.repo.PaymentsRepo;
 import com.app.repo.PendingTransactionRepo;
 import com.app.rest.RestAPI;
@@ -53,7 +55,7 @@ public class PaymentService {
         return new GenerateUrlResponse(createPaymentProcess.getData().getUrl(), pendingTransaction.getProcessId());
     }
 
-    public void payForUserFee(String israeliIdNumber, ReportPayment paymentReport){
+    public void payForUserFee(String header, String israeliIdNumber, ReportPayment paymentReport) throws Exception {
 
         // Check if it available from what it suppose to be in Cache
         Optional<PendingTransaction> optPending = this.pendingTransactionRepo.findByProcessId(paymentReport.getProcessId());
@@ -82,6 +84,8 @@ public class PaymentService {
         this.paymentsRepo.save(payment);
 
         // TODO Notify User service
+        DealsPack pack = Deals.getPacks(dealType);
+        this.restAPI.expandForReceivePayment(header, Deals.getPacks(dealType));
 
     }
     
