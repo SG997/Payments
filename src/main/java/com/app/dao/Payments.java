@@ -1,7 +1,7 @@
 package com.app.dao;
 
 import com.app.data.PaymentMethod;
-import com.app.data.PaymentType;
+import com.app.marketing.DealsType;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -23,18 +23,18 @@ public class Payments {
 
     PaymentMethod paymentMethod;
 
-    PaymentType paymentType;
+    DealsType dealType;
 
     boolean isFoundInCache;
 
 
-    public Payments(String from, String to, double amount, String time, PaymentMethod paymentMethod, PaymentType paymentType, boolean isFoundInCache) {
+    public Payments(String from, String to, double amount, String time, PaymentMethod paymentMethod, DealsType dealType, boolean isFoundInCache) {
         this.from = from;
         this.to = to;
         this.amount = amount;
         this.time = time;
         this.paymentMethod = paymentMethod;
-        this.paymentType = paymentType;
+        this.dealType = dealType;
         this.isFoundInCache = isFoundInCache;
     }
 
@@ -87,11 +87,12 @@ public class Payments {
         this.paymentMethod = paymentMethod;
     }
 
-    public PaymentType getPaymentType() {
-        return paymentType;
+
+    public DealsType getDealType() {
+        return dealType;
     }
 
-    public void setPaymentType(PaymentType paymentType) {
-        this.paymentType = paymentType;
+    public void setDealType(DealsType dealType) {
+        this.dealType = dealType;
     }
 }

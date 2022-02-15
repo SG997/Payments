@@ -4,11 +4,11 @@ import com.app.Utils;
 import com.app.config.system_data.UserDetailsAuth;
 import com.app.dao.Payments;
 import com.app.dao.PendingTransaction;
-import com.app.data.PaymentType;
 import com.app.data.ReportPayment;
 import com.app.data.RequestUrlForPaymentData;
 import com.app.data.meshulam.CreatePaymentProcess;
 import com.app.data.responses.GenerateUrlResponse;
+import com.app.marketing.DealsType;
 import com.app.repo.PaymentsRepo;
 import com.app.repo.PendingTransactionRepo;
 import com.app.rest.RestAPI;
@@ -42,11 +42,11 @@ public class PaymentService {
         String phoneNumber = userDetailsAuth.getSuffix();
 
         // Generate url for payment
-        CreatePaymentProcess createPaymentProcess = restAPI.createPaymentProcess(requestData.getPaymentMethod(), requestData.getSum(), fullName, phoneNumber);
+        CreatePaymentProcess createPaymentProcess = restAPI.createPaymentProcess(requestData.getPaymentMethod(), requestData.getDealType().value, fullName, phoneNumber);
 
         // TODO save status pending for payment in the db
         String time = Utils.getFormattedDate(Calendar.getInstance().getTime());
-        PendingTransaction pendingTransaction = new PendingTransaction(userId, SYSTEM_ID, requestData.getSum(), time, requestData.getPaymentMethod(), requestData.getPaymentType(), createPaymentProcess.getData().getProcessId() + "");
+        PendingTransaction pendingTransaction = new PendingTransaction(userId, SYSTEM_ID, requestData.getDealType().value, time, requestData.getPaymentMethod(), requestData.getDealType(), createPaymentProcess.getData().getProcessId() + "");
 
         this.pendingTransactionRepo.save(pendingTransaction);
 
@@ -59,29 +59,29 @@ public class PaymentService {
         Optional<PendingTransaction> optPending = this.pendingTransactionRepo.findByProcessId(paymentReport.getProcessId());
 
         String time = Utils.getFormattedDate(new Date(paymentReport.getTimestamp()));
-        PaymentType paymentType;
+        DealsType dealType;
         boolean isFoundInCache;
         if (optPending.isEmpty()) {
 
             // TODO handle in case of system doesn't remember it
             isFoundInCache = false;
             // So we can let the user continue working
-            paymentType = PaymentType.MONTHLY_USE;
+            dealType = DealsType.MONTHLY;
 
         } else {
 
-            paymentType = optPending.get().getPaymentType();
+            dealType = optPending.get().getDealType();
             isFoundInCache = true;
 
         }
 
 
 
-        Payments payment = new Payments(israeliIdNumber, SYSTEM_ID, paymentReport.getAmount(), time, paymentReport.getPaymentMethod(), paymentType, isFoundInCache);
+        Payments payment = new Payments(israeliIdNumber, SYSTEM_ID, paymentReport.getAmount(), time, paymentReport.getPaymentMethod(), dealType, isFoundInCache);
 
         this.paymentsRepo.save(payment);
 
-        // Notify User service
+        // TODO Notify User service
 
     }
     

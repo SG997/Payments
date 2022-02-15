@@ -1,23 +1,26 @@
 package com.app.data;
 
+import com.app.marketing.DealsType;
+
 public class RequestUrlForPaymentData {
 
     double sum;
     PaymentMethod paymentMethod;
-    PaymentType paymentType;
+    DealsType dealType;
 
-    public RequestUrlForPaymentData(double sum, PaymentMethod paymentMethod, PaymentType paymentType) {
+    public RequestUrlForPaymentData(double sum, PaymentMethod paymentMethod, DealsType dealType) {
         this.sum = sum;
         this.paymentMethod = paymentMethod;
-        this.paymentType = paymentType;
+        this.dealType = dealType;
     }
 
-    public PaymentType getPaymentType() {
-        return paymentType;
+
+    public DealsType getDealType() {
+        return dealType;
     }
 
-    public void setPaymentType(PaymentType paymentType) {
-        this.paymentType = paymentType;
+    public void setDealType(DealsType dealType) {
+        this.dealType = dealType;
     }
 
     public double getSum() {

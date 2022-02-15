@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Utils {
-    public static String DATE_FORMAT = "dd/MM/yyyy";
+    public static String DATE_FORMAT = "dd/MM/yyyy HH:mm";
 
     public static String getFormattedDate(Date date){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);

@@ -2,11 +2,10 @@ package com.app.controller;
 
 import com.app.config.system_data.AuthenticationResponse;
 import com.app.config.system_data.UserDetailsAuth;
-import com.app.data.PaymentMethod;
-import com.app.data.PaymentType;
 import com.app.data.ReportPayment;
 import com.app.data.RequestUrlForPaymentData;
 import com.app.data.responses.GenerateUrlResponse;
+import com.app.marketing.DealsType;
 import com.app.services.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +27,7 @@ public class PaymentsController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.getPrincipal() != null) {
-            UserDetailsAuth userDetailsAuth = (UserDetailsAuth) authentication.getPrincipal();
+            UserDetailsAuth userDetailsAuth = ((AuthenticationResponse) authentication.getPrincipal()).getUserDetailsAuth();
 
 
             this.paymentsService.payForUserFee(userDetailsAuth.getIsraeliIdNumber(), paymentReport);
@@ -46,7 +45,7 @@ public class PaymentsController {
         if (authentication != null && authentication.getPrincipal() != null) {
             UserDetailsAuth userDetailsAuth = ((AuthenticationResponse) authentication.getPrincipal()).getUserDetailsAuth();
 
-            if (requestData.getPaymentType() != PaymentType.MONTHLY_USE && requestData.getPaymentType() != PaymentType.YEARLY_USE){
+            if (requestData.getDealType() != DealsType.MONTHLY && requestData.getDealType() != DealsType.YEARLY){
                 return ResponseEntity.badRequest().body("Wrong use of this methods, please try diffrent payment method");
             }
 
