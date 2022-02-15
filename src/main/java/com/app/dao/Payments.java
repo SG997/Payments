@@ -25,14 +25,26 @@ public class Payments {
 
     PaymentType paymentType;
 
+    boolean isFoundInCache;
 
-    public Payments(String from, String to, double amount, String time, PaymentMethod paymentMethod, PaymentType paymentType) {
+
+    public Payments(String from, String to, double amount, String time, PaymentMethod paymentMethod, PaymentType paymentType, boolean isFoundInCache) {
         this.from = from;
         this.to = to;
         this.amount = amount;
         this.time = time;
         this.paymentMethod = paymentMethod;
         this.paymentType = paymentType;
+        this.isFoundInCache = isFoundInCache;
+    }
+
+
+    public boolean isFoundInCache() {
+        return isFoundInCache;
+    }
+
+    public void setFoundInCache(boolean foundInCache) {
+        isFoundInCache = foundInCache;
     }
 
     public String getFrom() {

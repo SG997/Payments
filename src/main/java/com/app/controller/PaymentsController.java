@@ -31,7 +31,7 @@ public class PaymentsController {
             UserDetailsAuth userDetailsAuth = (UserDetailsAuth) authentication.getPrincipal();
 
 
-            this.paymentsService.payForUserFee(userDetailsAuth.getIsraeliIdNumber(), paymentReport.getPayingFor(),paymentReport.getAmount(), paymentReport.getTimestamp());
+            this.paymentsService.payForUserFee(userDetailsAuth.getIsraeliIdNumber(), paymentReport);
 
             return ResponseEntity.ok().build();
         } else {

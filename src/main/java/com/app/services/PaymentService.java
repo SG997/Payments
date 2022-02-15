@@ -2,15 +2,21 @@ package com.app.services;
 
 import com.app.Utils;
 import com.app.config.system_data.UserDetailsAuth;
+import com.app.dao.Payments;
 import com.app.dao.PendingTransaction;
+import com.app.data.PaymentType;
+import com.app.data.ReportPayment;
 import com.app.data.RequestUrlForPaymentData;
 import com.app.data.meshulam.CreatePaymentProcess;
 import com.app.data.responses.GenerateUrlResponse;
+import com.app.repo.PaymentsRepo;
 import com.app.repo.PendingTransactionRepo;
 import com.app.rest.RestAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class PaymentService {
@@ -19,7 +25,12 @@ public class PaymentService {
     PendingTransactionRepo pendingTransactionRepo;
 
     @Autowired
+    PaymentsRepo paymentsRepo;
+
+    @Autowired
     RestAPI restAPI;
+
+    final String SYSTEM_ID = "SYSTEM";
 
 
 
@@ -35,25 +46,43 @@ public class PaymentService {
 
         // TODO save status pending for payment in the db
         String time = Utils.getFormattedDate(Calendar.getInstance().getTime());
-        PendingTransaction pendingTransaction = new PendingTransaction(userId, "System", requestData.getSum(), time, requestData.getPaymentMethod(), requestData.getPaymentType(), createPaymentProcess.getData().getProcessId() + "");
+        PendingTransaction pendingTransaction = new PendingTransaction(userId, SYSTEM_ID, requestData.getSum(), time, requestData.getPaymentMethod(), requestData.getPaymentType(), createPaymentProcess.getData().getProcessId() + "");
 
         this.pendingTransactionRepo.save(pendingTransaction);
 
         return new GenerateUrlResponse(createPaymentProcess.getData().getUrl(), pendingTransaction.getProcessId());
     }
 
-    public void payForUserFee(String from, String to, double amount, long timeStamp){
+    public void payForUserFee(String israeliIdNumber, ReportPayment paymentReport){
 
         // Check if it available from what it suppose to be in Cache
+        Optional<PendingTransaction> optPending = this.pendingTransactionRepo.findByProcessId(paymentReport.getProcessId());
 
-        //this.pendingTransactionRepo.findBy
+        String time = Utils.getFormattedDate(new Date(paymentReport.getTimestamp()));
+        PaymentType paymentType;
+        boolean isFoundInCache;
+        if (optPending.isEmpty()) {
 
-        // If it is save
-        // If it not save it as well and inform about it
+            // TODO handle in case of system doesn't remember it
+            isFoundInCache = false;
+            // So we can let the user continue working
+            paymentType = PaymentType.MONTHLY_USE;
+
+        } else {
+
+            paymentType = optPending.get().getPaymentType();
+            isFoundInCache = true;
+
+        }
+
+
+
+        Payments payment = new Payments(israeliIdNumber, SYSTEM_ID, paymentReport.getAmount(), time, paymentReport.getPaymentMethod(), paymentType, isFoundInCache);
+
+        this.paymentsRepo.save(payment);
 
         // Notify User service
 
     }
-
-
+    
 }

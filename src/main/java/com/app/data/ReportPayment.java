@@ -5,11 +5,33 @@ public class ReportPayment {
     double amount;
     String payingFor;
     long timestamp;
+    String processId;
+    PaymentMethod paymentMethod;
 
-    public ReportPayment(double amount, String payingFor, long timestamp) {
+    public ReportPayment(double amount, String payingFor, long timestamp, String processId, PaymentMethod paymentMethod) {
         this.amount = amount;
         this.payingFor = payingFor;
         this.timestamp = timestamp;
+        this.processId = processId;
+        this.paymentMethod = paymentMethod;
+    }
+
+
+
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getProcessId() {
+        return processId;
+    }
+
+    public void setProcessId(String processId) {
+        this.processId = processId;
     }
 
     public long getTimestamp() {
