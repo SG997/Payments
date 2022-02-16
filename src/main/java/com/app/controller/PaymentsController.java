@@ -2,6 +2,7 @@ package com.app.controller;
 
 import com.app.config.system_data.AuthenticationResponse;
 import com.app.config.system_data.UserDetailsAuth;
+import com.app.dao.Packs;
 import com.app.data.ReportPayment;
 import com.app.data.RequestUrlForPaymentData;
 import com.app.data.responses.GenerateUrlResponse;
@@ -13,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
@@ -57,6 +60,21 @@ public class PaymentsController {
             return ResponseEntity.ok().body(generateUrlForPayment);
         }
 
+        return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/getPacks")
+    public ResponseEntity<?> getPacks() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.getPrincipal() != null) {
+            UserDetailsAuth userDetailsAuth = ((AuthenticationResponse) authentication.getPrincipal()).getUserDetailsAuth();
+            List<Packs> packs = this.paymentsService.getPacks();
+
+            return ResponseEntity.ok(packs);
+
+
+        }
         return ResponseEntity.badRequest().build();
     }
 }

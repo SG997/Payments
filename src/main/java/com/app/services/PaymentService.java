@@ -2,6 +2,7 @@ package com.app.services;
 
 import com.app.Utils;
 import com.app.config.system_data.UserDetailsAuth;
+import com.app.dao.Packs;
 import com.app.dao.Payments;
 import com.app.dao.PendingTransaction;
 import com.app.data.ReportPayment;
@@ -11,6 +12,7 @@ import com.app.data.responses.GenerateUrlResponse;
 import com.app.marketing.Deals;
 import com.app.marketing.DealsType;
 import com.app.marketing.data.DealsPack;
+import com.app.repo.PacksRepo;
 import com.app.repo.PaymentsRepo;
 import com.app.repo.PendingTransactionRepo;
 import com.app.rest.RestAPI;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,6 +31,9 @@ public class PaymentService {
 
     @Autowired
     PaymentsRepo paymentsRepo;
+
+    @Autowired
+    PacksRepo packsRepo;
 
     @Autowired
     RestAPI restAPI;
@@ -87,6 +93,10 @@ public class PaymentService {
         DealsPack pack = Deals.getPacks(dealType);
         this.restAPI.expandForReceivePayment(header, Deals.getPacks(dealType));
 
+    }
+
+    public List<Packs> getPacks(){
+        return this.packsRepo.findAll();
     }
     
 }
