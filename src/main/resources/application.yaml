@@ -2,9 +2,26 @@ server:
   port:
     8060
 
+
 spring:
+  profiles.active: default
+
+---
+
+spring:
+
+  profiles: default
   data:
     mongodb:
       database: Payments
       port: 27017
       host: localhost
+
+---
+
+spring:
+  profiles: application-dev
+  data:
+    mongodb:
+
+      uri: mongodb+srv://asd:Aa123456@cluster0.c0px2.mongodb.net/Payments?retryWrites=true&w=majority

@@ -77,4 +77,9 @@ public class PaymentsController {
         }
         return ResponseEntity.badRequest().build();
     }
+
+    @GetMapping(value = "/test", headers="Accept=application/json", produces = "application/json")
+    public ResponseEntity<?> test() throws Exception{
+        return ResponseEntity.ok("Hello world test is complete");
+    }
 }
