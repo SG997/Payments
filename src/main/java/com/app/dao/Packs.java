@@ -15,10 +15,12 @@ public class Packs {
 
     DealsType dealsType;
     double sum;
+    String details;
 
-    public Packs(DealsType dealsType, double sum) {
+    public Packs(DealsType dealsType, double sum, String details) {
         this.dealsType = dealsType;
         this.sum = sum;
+        this.details = details;
     }
 
 
@@ -37,5 +39,13 @@ public class Packs {
 
     public void setSum(double sum) {
         this.sum = sum;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
     }
 }

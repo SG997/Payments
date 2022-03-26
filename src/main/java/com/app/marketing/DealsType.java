@@ -1,7 +1,8 @@
 package com.app.marketing;
 
 public enum DealsType {
-    MONTHLY(25),
+    MONTHLY(30),
+    HALF_YEARLY(150),
     YEARLY(230);
 
     public final int value;

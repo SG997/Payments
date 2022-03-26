@@ -47,7 +47,7 @@ public class PaymentService {
 
         String userId = userDetailsAuth.getIsraeliIdNumber();
         String fullName = userDetailsAuth.getName() + " " + userDetailsAuth.getLastName();
-        String phoneNumber = userDetailsAuth.getSuffix();
+        String phoneNumber = userDetailsAuth.getPreFix() + userDetailsAuth.getSuffix();
 
         // Generate url for payment
         CreatePaymentProcess createPaymentProcess = restAPI.createPaymentProcess(requestData.getPaymentMethod(), requestData.getDealType().value, fullName, phoneNumber);

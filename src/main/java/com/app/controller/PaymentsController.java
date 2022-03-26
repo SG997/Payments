@@ -7,14 +7,13 @@ import com.app.data.ReportPayment;
 import com.app.data.RequestUrlForPaymentData;
 import com.app.data.responses.GenerateUrlResponse;
 import com.app.marketing.DealsType;
+import com.app.services.DealsService;
 import com.app.services.PaymentService;
-import io.swagger.v3.oas.annotations.headers.Header;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -26,6 +25,9 @@ public class PaymentsController {
 
     @Autowired
     private PaymentService paymentsService;
+
+    @Autowired
+    private DealsService dealsService;
 
     @PostMapping("/payForUserFee")
     public ResponseEntity<?> payForUserFee(@RequestBody ReportPayment paymentReport, @RequestHeader(name = AUTHORIZATION) String header) throws Exception {
@@ -51,7 +53,7 @@ public class PaymentsController {
         if (authentication != null && authentication.getPrincipal() != null) {
             UserDetailsAuth userDetailsAuth = ((AuthenticationResponse) authentication.getPrincipal()).getUserDetailsAuth();
 
-            if (requestData.getDealType() != DealsType.MONTHLY && requestData.getDealType() != DealsType.YEARLY){
+            if (requestData.getDealType() != DealsType.MONTHLY && requestData.getDealType() != DealsType.YEARLY && requestData.getDealType() != DealsType.HALF_YEARLY){
                 return ResponseEntity.badRequest().body("Wrong use of this methods, please try diffrent payment method");
             }
 
@@ -65,16 +67,18 @@ public class PaymentsController {
 
     @GetMapping("/getPacks")
     public ResponseEntity<?> getPacks() {
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.getPrincipal() != null) {
+
             UserDetailsAuth userDetailsAuth = ((AuthenticationResponse) authentication.getPrincipal()).getUserDetailsAuth();
-            List<Packs> packs = this.paymentsService.getPacks();
 
-            return ResponseEntity.ok(packs);
+            List<Packs> deals = this.dealsService.getAllDeals();
 
-
+            return ResponseEntity.ok(deals);
         }
+
         return ResponseEntity.badRequest().build();
     }
 

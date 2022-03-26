@@ -70,7 +70,7 @@ public class RestAPI {
         MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
         //map.add("pageCode", "448b3c623ba3");
         map.add("userId", "0a9b82a404a2bb73");
-        map.add("pageCode", "448b3c623ba3");
+        map.add("pageCode", paymentMethod == PaymentMethod.BIT ? "448b3c623ba3" :  "27b8e35c6bfa");
         map.add("sum", sum + "");
         map.add("pageField[fullName]", fullName);
         map.add("pageField[phone]", fullPhoneNumber);
