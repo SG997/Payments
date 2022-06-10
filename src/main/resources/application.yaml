@@ -21,7 +21,10 @@ spring:
 
 spring:
   profiles: application-dev
+
+  url: https://api-sys-test.di-ro.com
+
   data:
     mongodb:
 
-      uri: mongodb+srv://asd:Aa123456@cluster0.c0px2.mongodb.net/Payments?retryWrites=true&w=majority
+      uri: mongodb+srv://asd:Aa123456@diro-test.c0px2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority

@@ -4,6 +4,7 @@ package com.app.config.filter;
 import com.app.config.BeansNames;
 import com.app.config.system_data.AuthenticationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,7 +25,10 @@ public class Filter extends OncePerRequestFilter {
     final String BEARER = "Bearer ";
     final String AUTHORIZATION = "Authorization";
 
-    private final String url = "http://localhost:8065/user/token";
+    @Value("${spring.url}")
+    String baseUrl;
+
+    private String url = "http://localhost:8065/user/token";
 
 
     @Autowired
@@ -46,6 +50,9 @@ public class Filter extends OncePerRequestFilter {
 
             HttpEntity<AuthenticationResponse> requestEntity = new HttpEntity<>(headers);
 
+            url = baseUrl + "/user/token";
+
+
             ResponseEntity<AuthenticationResponse> request33 = new RestTemplate().exchange(
                     url, HttpMethod.GET, requestEntity, AuthenticationResponse.class);
 
@@ -64,7 +71,7 @@ public class Filter extends OncePerRequestFilter {
         }
 
 
-        System.out.println("Hello Filter");
+        System.out.println("Hello Filter2");
 
         filterChain.doFilter(request, httpServletResponse);
 
