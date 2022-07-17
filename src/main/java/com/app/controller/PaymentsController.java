@@ -84,6 +84,6 @@ public class PaymentsController {
 
     @GetMapping(value = "/test", headers="Accept=application/json", produces = "application/json")
     public ResponseEntity<?> test() throws Exception{
-        return ResponseEntity.ok("Hello world test is complete2");
+        return ResponseEntity.ok("Hello world test is complete3");
     }
 }
